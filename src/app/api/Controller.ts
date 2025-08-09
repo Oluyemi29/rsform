@@ -102,7 +102,14 @@ export const RegDatas = async (regData: regDataProps) => {
         message: "Image size too big",
       };
     }
-    // const imageUrl = await cloudinary.uploader.upload(imageFile.)
+    const AcceptedFiles = ["image/png", "image/jpeg", "image/jpg"];
+    if (!AcceptedFiles.includes(imageFile.type)) {
+      return {
+        success: false,
+        message: "Only png, jpg or jpeg files are allowed",
+      };
+    }
+    
     const ImageUrl = async () => {
       const formData = new FormData();
       formData.append("file", imageFile);
@@ -230,6 +237,7 @@ export const DeleteMembers = async (id: string, image: string) => {
         message: "All fields are required",
       };
     }
+    await ConnectDB();
     const existMember = await FormDetails.findById(id);
     if (!existMember) {
       return {

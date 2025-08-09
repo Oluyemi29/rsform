@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import User from "@/model/userModel";
 import { UserProps } from "../../../../../types/usertype";
+import ConnectDB from "@/connect/connection";
 
 const AuthOption: AuthOptions = {
   providers: [
@@ -25,6 +26,7 @@ const AuthOption: AuthOptions = {
         if (!email || !password) {
           throw new Error("All fields are required");
         }
+        await ConnectDB();
         const user = await User.findOne({ email });
         if (!user) {
           throw new Error("No account found with that email");
@@ -70,7 +72,6 @@ const AuthOption: AuthOptions = {
   session: {
     strategy: "jwt",
   },
-  
 };
 
 const handlers = NextAuth(AuthOption);

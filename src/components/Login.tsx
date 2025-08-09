@@ -63,8 +63,8 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full flex flex-row justify-center bg-white pt-10">
-      <Card className="lg:w-2/6 md:w-4/6 p-5 w-full h-[28rem] overflow-y-auto">
+    <div className="w-full flex flex-row justify-center bg-white pt-20 md:pt-10">
+      <Card className="lg:w-2/6 md:w-4/6 p-5 w-full h-[30rem] overflow-y-auto">
         <div className="w-full flex flex-row justify-between items-center">
           <Image
             src={"/cac.jpg"}

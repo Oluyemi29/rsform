@@ -275,8 +275,8 @@ const Registration = () => {
   };
 
   return (
-    <div className="w-full flex flex-row justify-center bg-white pt-10">
-      <Card className="lg:w-2/6 md:w-4/6 p-5 w-full h-[28rem] overflow-y-auto">
+    <div className="w-full flex flex-row justify-center bg-white pt-20 md:pt-10">
+      <Card className="lg:w-2/6 md:w-4/6 p-5 w-full h-[30rem] no-scrollbar overflow-y-auto">
         <div className="w-full flex flex-row justify-between items-center">
           <Image
             src={"/cac.jpg"}
@@ -332,6 +332,7 @@ const Registration = () => {
             hidden
             type="file"
             name="image"
+            accept=".png, .jpg, .jpeg"
           />
         </label>
         <form
@@ -472,9 +473,6 @@ const Registration = () => {
                 placeholder="Select the year"
                 name="basic1year"
                 value={regData.basic1.year}
-                // onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                //   handleSelectionChange(e)
-                // }
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                   setRegData((prevData) => {
                     prevData.basic1.year = e.target.value;
@@ -519,9 +517,6 @@ const Registration = () => {
                 placeholder="Select the year"
                 name="basic2year"
                 value={regData.basic2.year}
-                // onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                //   handleSelectionChange(e)
-                // }
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                   setRegData((prevData) => {
                     prevData.basic2.year = e.target.value;
@@ -565,9 +560,6 @@ const Registration = () => {
                 placeholder="Select the year"
                 name="basic3year"
                 value={regData.basic3.year}
-                // onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                //   handleSelectionChange(e)
-                // }
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                   setRegData((prevData) => {
                     prevData.basic3.year = e.target.value;
@@ -609,9 +601,6 @@ const Registration = () => {
                 placeholder="Select the year"
                 name="advanceyear"
                 value={regData.advance.year}
-                // onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                //   handleSelectionChange(e)
-                // }
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                   setRegData((prevData) => {
                     prevData.advance.year = e.target.value;
@@ -653,9 +642,6 @@ const Registration = () => {
                 placeholder="Select the year"
                 name="leadershipyear"
                 value={regData.leadership.year}
-                // onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                //   handleSelectionChange(e)
-                // }
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                   setRegData((prevData) => {
                     prevData.leadership.year = e.target.value;
@@ -697,9 +683,6 @@ const Registration = () => {
                 placeholder="Select the year"
                 name="nationalProvostyear"
                 value={regData.nationalProvost.year}
-                // onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                //   handleSelectionChange(e)
-                // }
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                   setRegData((prevData) => {
                     prevData.nationalProvost.year = e.target.value;
@@ -715,7 +698,7 @@ const Registration = () => {
           </div>
           {loading ? (
             <Button
-              className="bg-rsdeep/55 text-white"
+              className="bg-rsdeep/55 text-white mt-20"
               type="button"
               isLoading
               disabled
@@ -723,7 +706,7 @@ const Registration = () => {
               Submiting...
             </Button>
           ) : (
-            <Button className="bg-rsdeep text-white" type="submit">
+            <Button className="bg-rsdeep text-white mt-20" type="submit">
               Submit
             </Button>
           )}
