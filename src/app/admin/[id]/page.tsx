@@ -3,6 +3,7 @@ import ConnectDB from "@/connect/connection";
 import FormDetails from "@/model/formSchema";
 import { Types } from "mongoose";
 import { Metadata } from "next";
+import { unstable_noStore as noStore } from "next/cache";
 import React from "react";
 
 export const metadata: Metadata = {
@@ -46,6 +47,7 @@ type MembersInfoSerialized = Omit<
   updatedAt: string;
 };
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
+  noStore();
   const id = (await params).id;
   await ConnectDB();
   const member = await FormDetails.findById(id).lean<MembersInfoProps | null>();

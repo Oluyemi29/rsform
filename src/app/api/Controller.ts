@@ -109,7 +109,7 @@ export const RegDatas = async (regData: regDataProps) => {
         message: "Only png, jpg or jpeg files are allowed",
       };
     }
-    
+
     const ImageUrl = async () => {
       const formData = new FormData();
       formData.append("file", imageFile);
@@ -157,6 +157,7 @@ export const RegDatas = async (regData: regDataProps) => {
       nationalProvostyear: nationalProvost.year,
     });
     if (members) {
+      revalidatePath("/admin");
       return {
         success: true,
         message: "registered successfully",
