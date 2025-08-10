@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
-const formSchema = new mongoose.Schema(
+const issueSchema = new mongoose.Schema(
   {
-    image: {
-      type: String,
-      required: true,
-    },
     name: {
       type: String,
       required: true,
@@ -32,7 +28,6 @@ const formSchema = new mongoose.Schema(
     idcard: {
       type: String,
       required: true,
-      unique: true,
     },
     rank: {
       type: String,
@@ -46,6 +41,10 @@ const formSchema = new mongoose.Schema(
       type: String,
       required: true,
       default: "",
+    },
+    description: {
+      type: String,
+      required: true,
     },
     basic1: {
       type: Boolean,
@@ -101,7 +100,7 @@ const formSchema = new mongoose.Schema(
   }
 );
 
-const FormDetails =
-  mongoose.models.members || mongoose.model("members", formSchema);
+const IssueDetails =
+  mongoose.models.issues || mongoose.model("issues", issueSchema);
 
-export default FormDetails;
+export default IssueDetails;

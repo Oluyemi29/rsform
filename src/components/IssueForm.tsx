@@ -1,9 +1,9 @@
 "use client";
-import { Button, Card, Checkbox, Input } from "@heroui/react";
+import { Button, Card, Checkbox, Input, Textarea } from "@heroui/react";
 import Image from "next/image";
 import React, { useState } from "react";
 import { Select, SelectItem } from "@heroui/react";
-import { RegDatas } from "@/app/api/Controller";
+import { IssueDatas } from "@/app/api/Controller";
 import toast from "react-hot-toast";
 import Link from "next/link";
 
@@ -48,10 +48,8 @@ export const yearList = [
   { key: "2024", label: "2024" },
 ];
 
-type regDataProps = {
-  imageFile: Blob | null;
-  imagePreview: string;
-  imageSize: string;
+type issueFormProps = {
+  description: string;
   name: string;
   companyNumber: string;
   companyName: string;
@@ -87,12 +85,10 @@ type regDataProps = {
     year: string;
   };
 };
-const Registration = () => {
+const IssueForm = () => {
   const [loading, setLoading] = useState(false);
-  const [regData, setRegData] = useState<regDataProps>({
-    imageFile: null,
-    imagePreview: "",
-    imageSize: "",
+  const [issueData, setIssueData] = useState<issueFormProps>({
+    description: "",
     name: "",
     companyNumber: "",
     companyName: "",
@@ -130,33 +126,19 @@ const Registration = () => {
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, files } = e.target;
+    const { name, value, type } = e.target;
     if (type === "text" || type === "number") {
-      setRegData((prevData) => {
+      setIssueData((prevData) => {
         return {
           ...prevData,
           [name]: value,
         };
       });
     }
-
-    if (type === "file") {
-      if (files) {
-        const megabyte = files[0].size / (1024 * 1024);
-        setRegData((prevData) => {
-          return {
-            ...prevData,
-            imageFile: files[0],
-            imagePreview: URL.createObjectURL(files[0]),
-            imageSize: `${megabyte.toFixed(3)} MB`,
-          };
-        });
-      }
-    }
   };
   const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setRegData((prevData) => {
+    setIssueData((prevData) => {
       return {
         ...prevData,
         [name]: value,
@@ -169,12 +151,12 @@ const Registration = () => {
     try {
       setLoading(true);
       const {
+        description,
         name,
         battalionCouncil,
         companyName,
         companyNumber,
         divisionalCouncil,
-        imageFile,
         rank,
         regionalCouncil,
         yearjoinRs,
@@ -186,8 +168,9 @@ const Registration = () => {
         nationalProvost,
         idcard,
         phone,
-      } = regData;
+      } = issueData;
       if (
+        !description ||
         !name ||
         !battalionCouncil ||
         !companyName ||
@@ -201,13 +184,7 @@ const Registration = () => {
       ) {
         return toast.error("Some field are required");
       }
-      if (!imageFile) {
-        return toast.error("Image is required");
-      }
-      const maxSize = 1024 * 1024 * 10;
-      if (imageFile.size > maxSize) {
-        return toast.error("Maximum of 10MB image size");
-      }
+
       if (advance.haveIt && !advance.year) {
         return toast.error("Kindly select your advance year");
       }
@@ -227,16 +204,14 @@ const Registration = () => {
         return toast.error("Kindly select your National Provost year");
       }
 
-      const request = await RegDatas(regData as regDataProps);
+      const request = await IssueDatas(issueData as issueFormProps);
       if (request.success) {
         toast.success(request.message);
-        setRegData((prevData) => {
+        setIssueData((prevData) => {
           return {
             ...prevData,
+            description: "",
             phone: "",
-            imageFile: null,
-            imagePreview: "",
-            imageSize: "",
             name: "",
             companyNumber: "",
             companyName: "",
@@ -310,39 +285,11 @@ const Registration = () => {
         <h1 className="text-center text-rsdeep text-medium">
           The Royal Shepherd
         </h1>
-        <p className="text-center text-sm text-rsdeep/70">Bio data form</p>
+        <p className="text-center text-sm text-rsdeep/70">Issue data form</p>
+        <p className="text-center text-[0.7rem] text-rsdeep/70">
+          Fill the below form and contact this number for follow up on any issue 08069043677 
+        </p>
 
-        <label className="w-max mx-auto cursor-pointer">
-          <div className="w-max mx-auto flex mt-5 flex-col justify-center items-center">
-            <Image
-              src={regData.imagePreview || "/user.jpg"}
-              alt="user"
-              width={40}
-              height={40}
-              priority
-              quality={100}
-              unoptimized
-              className="w-20 h-20 rounded-lg border-2 border-rsdeep"
-            />
-            <p className="text-[0.7rem] text-rsdeep/85 text-center">
-              upload your image for <br /> identification
-            </p>
-            {regData.imageSize && (
-              <p className="text-[0.7rem] text-rsdeep/85 text-center">
-                {regData.imageSize}
-              </p>
-            )}
-          </div>
-          <input
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              handleInputChange(e);
-            }}
-            hidden
-            type="file"
-            name="image"
-            accept=".png, .jpg, .jpeg"
-          />
-        </label>
         <form
           onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}
           className="w-full mt-5 flex flex-col gap-5"
@@ -353,7 +300,7 @@ const Registration = () => {
             label={"Your Full Name"}
             type="text"
             name="name"
-            value={regData.name}
+            value={issueData.name}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleInputChange(e)
             }
@@ -364,7 +311,7 @@ const Registration = () => {
             label={"Your Company Number"}
             type="text"
             name="companyNumber"
-            value={regData.companyNumber}
+            value={issueData.companyNumber}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleInputChange(e)
             }
@@ -375,7 +322,7 @@ const Registration = () => {
             label={"Your Company Name"}
             type="text"
             name="companyName"
-            value={regData.companyName}
+            value={issueData.companyName}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleInputChange(e)
             }
@@ -386,7 +333,7 @@ const Registration = () => {
             label={"Your Battalion Council"}
             type="text"
             name="battalionCouncil"
-            value={regData.battalionCouncil}
+            value={issueData.battalionCouncil}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleInputChange(e)
             }
@@ -397,7 +344,7 @@ const Registration = () => {
             label={"Your Divisional Council"}
             type="text"
             name="divisionalCouncil"
-            value={regData.divisionalCouncil}
+            value={issueData.divisionalCouncil}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleInputChange(e)
             }
@@ -408,7 +355,7 @@ const Registration = () => {
             label={"Your Regional Council"}
             type="text"
             name="regionalCouncil"
-            value={regData.regionalCouncil}
+            value={issueData.regionalCouncil}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleInputChange(e)
             }
@@ -419,7 +366,7 @@ const Registration = () => {
             label={"Your Idcard Number"}
             type="number"
             name="idcard"
-            value={regData.idcard}
+            value={issueData.idcard}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleInputChange(e)
             }
@@ -430,9 +377,25 @@ const Registration = () => {
             label={"Your Active Calling Phone Number"}
             type="number"
             name="phone"
-            value={regData.phone}
+            value={issueData.phone}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleInputChange(e)
+            }
+          />
+
+          <Textarea
+            className="w-full"
+            placeholder="Enter the issue in details"
+            label={"Whats the issue all about"}
+            name="description"
+            type="text"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setIssueData((prevData) => {
+                return {
+                  ...prevData,
+                  description: e.target.value,
+                };
+              })
             }
           />
           <Select
@@ -440,7 +403,7 @@ const Registration = () => {
             label="Your Rank"
             placeholder="Select your rank"
             name="rank"
-            value={regData.rank}
+            value={issueData.rank}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
               handleSelectionChange(e)
             }
@@ -454,7 +417,7 @@ const Registration = () => {
             label="Year of joining RS"
             placeholder="Select year of joining RS"
             name="yearjoinRs"
-            value={regData.yearjoinRs}
+            value={issueData.yearjoinRs}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
               handleSelectionChange(e)
             }
@@ -471,9 +434,9 @@ const Registration = () => {
               <Checkbox
                 name="basic1"
                 type="checkbox"
-                checked={regData.basic1.haveIt}
+                checked={issueData.basic1.haveIt}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setRegData((prevData) => {
+                  setIssueData((prevData) => {
                     return {
                       ...prevData,
                       basic1: { haveIt: e.target.checked, year: "" },
@@ -485,15 +448,15 @@ const Registration = () => {
                 Basic 1
               </Checkbox>
             </div>
-            {regData.basic1.haveIt && (
+            {issueData.basic1.haveIt && (
               <Select
                 className="w-full"
                 label="Year"
                 placeholder="Select the year"
                 name="basic1year"
-                value={regData.basic1.year}
+                value={issueData.basic1.year}
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                  setRegData((prevData) => {
+                  setIssueData((prevData) => {
                     prevData.basic1.year = e.target.value;
                     return prevData;
                   });
@@ -514,9 +477,9 @@ const Registration = () => {
               <Checkbox
                 name="basic2"
                 type="checkbox"
-                checked={regData.basic2.haveIt}
+                checked={issueData.basic2.haveIt}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setRegData((prevData) => {
+                  setIssueData((prevData) => {
                     return {
                       ...prevData,
                       basic2: { haveIt: e.target.checked, year: "" },
@@ -529,15 +492,15 @@ const Registration = () => {
                 Basic 2
               </Checkbox>
             </div>
-            {regData.basic2.haveIt && (
+            {issueData.basic2.haveIt && (
               <Select
                 className="w-full"
                 label="Year"
                 placeholder="Select the year"
                 name="basic2year"
-                value={regData.basic2.year}
+                value={issueData.basic2.year}
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                  setRegData((prevData) => {
+                  setIssueData((prevData) => {
                     prevData.basic2.year = e.target.value;
                     return prevData;
                   });
@@ -557,9 +520,9 @@ const Registration = () => {
               <Checkbox
                 name="basic3"
                 type="checkbox"
-                checked={regData.basic3.haveIt}
+                checked={issueData.basic3.haveIt}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setRegData((prevData) => {
+                  setIssueData((prevData) => {
                     return {
                       ...prevData,
                       basic3: { haveIt: e.target.checked, year: "" },
@@ -572,15 +535,15 @@ const Registration = () => {
                 Basic 3
               </Checkbox>
             </div>
-            {regData.basic3.haveIt && (
+            {issueData.basic3.haveIt && (
               <Select
                 className="w-full"
                 label="Year"
                 placeholder="Select the year"
                 name="basic3year"
-                value={regData.basic3.year}
+                value={issueData.basic3.year}
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                  setRegData((prevData) => {
+                  setIssueData((prevData) => {
                     prevData.basic3.year = e.target.value;
                     return prevData;
                   });
@@ -597,10 +560,10 @@ const Registration = () => {
               <p className="text-[0.7rem] text-rsdeep">Advance Course</p>
               <Checkbox
                 name="advance"
-                checked={regData.advance.haveIt}
+                checked={issueData.advance.haveIt}
                 type="checkbox"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setRegData((prevData) => {
+                  setIssueData((prevData) => {
                     return {
                       ...prevData,
                       advance: { haveIt: e.target.checked, year: "" },
@@ -613,15 +576,15 @@ const Registration = () => {
                 Advance
               </Checkbox>
             </div>
-            {regData.advance.haveIt && (
+            {issueData.advance.haveIt && (
               <Select
                 className="w-full"
                 label="Year"
                 placeholder="Select the year"
                 name="advanceyear"
-                value={regData.advance.year}
+                value={issueData.advance.year}
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                  setRegData((prevData) => {
+                  setIssueData((prevData) => {
                     prevData.advance.year = e.target.value;
                     return prevData;
                   });
@@ -639,9 +602,9 @@ const Registration = () => {
               <Checkbox
                 name="leadership"
                 type="checkbox"
-                checked={regData.leadership.haveIt}
+                checked={issueData.leadership.haveIt}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setRegData((prevData) => {
+                  setIssueData((prevData) => {
                     return {
                       ...prevData,
                       leadership: { haveIt: e.target.checked, year: "" },
@@ -654,15 +617,15 @@ const Registration = () => {
                 Leadership
               </Checkbox>
             </div>
-            {regData.leadership.haveIt && (
+            {issueData.leadership.haveIt && (
               <Select
                 className="w-full"
                 label="Year"
                 placeholder="Select the year"
                 name="leadershipyear"
-                value={regData.leadership.year}
+                value={issueData.leadership.year}
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                  setRegData((prevData) => {
+                  setIssueData((prevData) => {
                     prevData.leadership.year = e.target.value;
                     return prevData;
                   });
@@ -680,9 +643,9 @@ const Registration = () => {
               <Checkbox
                 name="nationalProvost"
                 type="checkbox"
-                checked={regData.nationalProvost.haveIt}
+                checked={issueData.nationalProvost.haveIt}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setRegData((prevData) => {
+                  setIssueData((prevData) => {
                     return {
                       ...prevData,
                       nationalProvost: { haveIt: e.target.checked, year: "" },
@@ -695,15 +658,15 @@ const Registration = () => {
                 National
               </Checkbox>
             </div>
-            {regData.nationalProvost.haveIt && (
+            {issueData.nationalProvost.haveIt && (
               <Select
                 className="w-full"
                 label="Year"
                 placeholder="Select the year"
                 name="nationalProvostyear"
-                value={regData.nationalProvost.year}
+                value={issueData.nationalProvost.year}
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                  setRegData((prevData) => {
+                  setIssueData((prevData) => {
                     prevData.nationalProvost.year = e.target.value;
                     return prevData;
                   });
@@ -738,4 +701,4 @@ const Registration = () => {
   );
 };
 
-export default Registration;
+export default IssueForm;
