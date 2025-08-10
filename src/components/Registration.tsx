@@ -730,8 +730,8 @@ const Registration = () => {
             </Button>
           )}
         </form>
-        <Link href={"/contact"} className="text-center mt-3 text-rsdeep ">
-          <p className="text-[0.9rem]">Contact Admin</p>
+        <Link href={"/issue"} className="text-center mt-3 text-rsdeep ">
+          <p className="text-[0.9rem]">Log Issue to Admin</p>
         </Link>
       </Card>
     </div>
