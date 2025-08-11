@@ -1,11 +1,16 @@
 "use client";
-import { Button, Card, Checkbox, Input, Textarea } from "@heroui/react";
+import {
+  addToast,
+  Button,
+  Card,
+  Checkbox,
+  Input,
+  Textarea,
+} from "@heroui/react";
 import Image from "next/image";
 import React, { useState } from "react";
 import { Select, SelectItem } from "@heroui/react";
 import { IssueDatas } from "@/app/api/Controller";
-import toast from "react-hot-toast";
-import Link from "next/link";
 
 export const rankList = [
   { key: "Private", label: "Private" },
@@ -182,31 +187,86 @@ const IssueForm = () => {
         !idcard ||
         !phone
       ) {
-        return toast.error("Some field are required");
+        addToast({
+          title: "Error",
+          description: "Some field are required",
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
+        return;
       }
 
       if (advance.haveIt && !advance.year) {
-        return toast.error("Kindly select your advance year");
+        addToast({
+          title: "Error",
+          description: "Kindly select your advance year",
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
+        return;
       }
       if (basic1.haveIt && !basic1.year) {
-        return toast.error("Kindly select your basic 1 year");
+        addToast({
+          title: "Error",
+          description: "Kindly select your basic 1 year",
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
+        return;
       }
       if (basic2.haveIt && !basic2.year) {
-        return toast.error("Kindly select your basic 2 year");
+        addToast({
+          title: "Error",
+          description: "Kindly select your basic 2 year",
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
+        return;
       }
       if (basic3.haveIt && !basic3.year) {
-        return toast.error("Kindly select your basic 3 year");
+        addToast({
+          title: "Error",
+          description: "Kindly select your basic 3 year",
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
+        return;
       }
       if (leadership.haveIt && !leadership.year) {
-        return toast.error("Kindly select your leadership year");
+        addToast({
+          title: "Error",
+          description: "Kindly select your leadership year",
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
+        return;
       }
       if (nationalProvost.haveIt && !nationalProvost.year) {
-        return toast.error("Kindly select your National Provost year");
+        addToast({
+          title: "Error",
+          description: "Kindly select your National Provost year",
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
+        return;
       }
 
       const request = await IssueDatas(issueData as issueFormProps);
       if (request.success) {
-        toast.success(request.message);
+        addToast({
+          title: "Done",
+          description: request.message,
+          color: "success",
+          radius: "md",
+          timeout: 10000,
+        });
         setIssueData((prevData) => {
           return {
             ...prevData,
@@ -248,7 +308,13 @@ const IssueForm = () => {
           };
         });
       } else {
-        toast.error(request.message);
+        addToast({
+          title: "Error",
+          description: request.message,
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
       }
     } catch (error) {
       console.log(error);
@@ -287,7 +353,8 @@ const IssueForm = () => {
         </h1>
         <p className="text-center text-sm text-rsdeep/70">Issue data form</p>
         <p className="text-center text-[0.7rem] text-rsdeep/70">
-          Fill the below form and contact this number for follow up on any issue 08069043677 
+          Fill the below form and contact this number for follow up on any issue
+          08069043677
         </p>
 
         <form
@@ -693,9 +760,6 @@ const IssueForm = () => {
             </Button>
           )}
         </form>
-        <Link href={"/contact"} className="text-center mt-3 text-rsdeep ">
-          <p className="text-[0.9rem]">Contact Admin</p>
-        </Link>
       </Card>
     </div>
   );

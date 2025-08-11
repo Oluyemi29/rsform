@@ -1,9 +1,8 @@
 "use client";
 import { DeleteIssue } from "@/app/api/Controller";
-import { Button, Card } from "@heroui/react";
+import { addToast, Button, Card } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import toast from "react-hot-toast";
 
 interface MembersInfoProps {
   allMembers:
@@ -41,20 +40,38 @@ interface MembersInfoProps {
 const IssueInfo = ({ allMembers }: MembersInfoProps) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  //   const { data: session } = useSession();
 
   const handleDelete = async (id: string | undefined) => {
     try {
       setLoading(true);
       if (!id) {
-        return toast.error("All fields are required");
+        addToast({
+          title: "Error",
+          description: "All fields are required",
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
+        return;
       }
       const response = await DeleteIssue(id);
       if (response.success) {
-        toast.success(response.message);
+        addToast({
+          title: "Done",
+          description: response.message,
+          color: "success",
+          radius: "md",
+          timeout: 10000,
+        });
         return router.push("/admin");
       } else {
-        toast.success(response.message);
+        addToast({
+          title: "Error",
+          description: response.message,
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
       }
     } catch (error) {
       console.log(error);

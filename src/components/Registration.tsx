@@ -1,10 +1,9 @@
 "use client";
-import { Button, Card, Checkbox, Input } from "@heroui/react";
+import { addToast, Button, Card, Checkbox, Input } from "@heroui/react";
 import Image from "next/image";
 import React, { useState } from "react";
 import { Select, SelectItem } from "@heroui/react";
 import { RegDatas } from "@/app/api/Controller";
-import toast from "react-hot-toast";
 import Link from "next/link";
 
 export const rankList = [
@@ -199,37 +198,106 @@ const Registration = () => {
         !idcard ||
         !phone
       ) {
-        return toast.error("Some field are required");
+        addToast({
+          title: "Error",
+          description: "Some field are required",
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
+        return;
       }
       if (!imageFile) {
-        return toast.error("Image is required");
+        addToast({
+          title: "Error",
+          description: "Image is required",
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
+        return;
       }
       const maxSize = 1024 * 1024 * 10;
       if (imageFile.size > maxSize) {
-        return toast.error("Maximum of 10MB image size");
+        addToast({
+          title: "Error",
+          description: "Maximum of 10MB image size",
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
+        return;
       }
       if (advance.haveIt && !advance.year) {
-        return toast.error("Kindly select your advance year");
+        addToast({
+          title: "Error",
+          description: "Kindly select your advance year",
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
+        return;
       }
       if (basic1.haveIt && !basic1.year) {
-        return toast.error("Kindly select your basic 1 year");
+        addToast({
+          title: "Error",
+          description: "Kindly select your basic 1 year",
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
+        return;
       }
       if (basic2.haveIt && !basic2.year) {
-        return toast.error("Kindly select your basic 2 year");
+        addToast({
+          title: "Error",
+          description: "Kindly select your basic 2 year",
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
+        return;
       }
       if (basic3.haveIt && !basic3.year) {
-        return toast.error("Kindly select your basic 3 year");
+        addToast({
+          title: "Error",
+          description: "Kindly select your basic 3 year",
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
+        return;
       }
       if (leadership.haveIt && !leadership.year) {
-        return toast.error("Kindly select your leadership year");
+        addToast({
+          title: "Error",
+          description: "Kindly select your leadership year",
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
+        return;
       }
       if (nationalProvost.haveIt && !nationalProvost.year) {
-        return toast.error("Kindly select your National Provost year");
+        addToast({
+          title: "Error",
+          description: "Kindly select your National Provost year",
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
+        return;
       }
 
       const request = await RegDatas(regData as regDataProps);
       if (request.success) {
-        toast.success(request.message);
+        addToast({
+          title: "Done",
+          description: request.message,
+          color: "success",
+          radius: "md",
+          timeout: 10000,
+        });
         setRegData((prevData) => {
           return {
             ...prevData,
@@ -273,7 +341,13 @@ const Registration = () => {
           };
         });
       } else {
-        toast.error(request.message);
+        addToast({
+          title: "Error",
+          description: request.message,
+          color: "danger",
+          radius: "md",
+          timeout: 10000,
+        });
       }
     } catch (error) {
       console.log(error);

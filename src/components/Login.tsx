@@ -1,5 +1,5 @@
 "use client";
-import { Button, Card, Input } from "@heroui/react";
+import { addToast, Button, Card, Input } from "@heroui/react";
 import Image from "next/image";
 import React, { useState } from "react";
 import { FaEye } from "react-icons/fa";
@@ -7,7 +7,6 @@ import { FaEyeSlash } from "react-icons/fa";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -39,19 +38,55 @@ const Login = () => {
       });
       if (response?.error) {
         if (response.error.includes("No account")) {
-          toast.error("Email not found. Please register first.");
+          addToast({
+            title: "Error",
+            description: "Email not found. Please register first.",
+            color: "danger",
+            radius: "md",
+            timeout: 10000,
+          });
         } else if (response.error.includes("No credential")) {
-          toast.error("No credential found");
+          addToast({
+            title: "Error",
+            description: "No credential found",
+            color: "danger",
+            radius: "md",
+            timeout: 10000,
+          });
         } else if (response.error.includes("All fields")) {
-          toast.error("All fields are required");
+          addToast({
+            title: "Error",
+            description: "All fields are required",
+            color: "danger",
+            radius: "md",
+            timeout: 10000,
+          });
         } else if (response.error.includes("Incorrect password")) {
-          toast.error("Password is incorrect. Try again.");
+          addToast({
+            title: "Error",
+            description: "Password is incorrect. Try again.",
+            color: "danger",
+            radius: "md",
+            timeout: 10000,
+          });
         } else {
-          toast.error("Something went wrong. Please try again.");
+          addToast({
+            title: "Error",
+            description: "Something went wrong. Please try again.",
+            color: "danger",
+            radius: "md",
+            timeout: 10000,
+          });
         }
         return;
       } else {
-        toast.success("Login successfully");
+        addToast({
+          title: "Done",
+          description: "Login successfully",
+          color: "success",
+          radius: "md",
+          timeout: 10000,
+        });
         return router.push("/admin");
       }
     } catch (error) {
