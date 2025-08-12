@@ -91,6 +91,12 @@ const IssueInfo = ({ allMembers }: MembersInfoProps) => {
           </p>
         </div>
         <div className="flex flex-row justify-between items-center">
+          <p className="text-rsdeep text-[0.7rem]">Phone Number</p>
+          <p className="text-rsdeep text-[0.7rem] font-semibold">
+            {allMembers?.phone}
+          </p>
+        </div>
+        <div className="flex flex-row justify-between items-center">
           <p className="text-rsdeep text-[0.7rem]">Company Name</p>
           <p className="text-rsdeep text-[0.7rem] font-semibold">
             {allMembers?.companyName}

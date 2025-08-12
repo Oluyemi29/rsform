@@ -12,12 +12,13 @@ interface MembersInfoProps {
         image: string;
         name: string;
         companyNumber: string;
+        phone: string;
         companyName: string;
         battalionCouncil: string;
         divisionalCouncil: string;
         regionalCouncil: string;
         idcard: string;
-        rank: string;
+        rank: string; 
         yearjoinRs: string;
         basic1: boolean;
         basic1year: string;
@@ -103,6 +104,12 @@ const MemberInfo = ({ allMembers }: MembersInfoProps) => {
           <p className="text-rsdeep text-[0.7rem]">Name</p>
           <p className="text-rsdeep text-[0.7rem] font-semibold">
             {allMembers?.name}
+          </p>
+        </div>
+        <div className="flex flex-row justify-between items-center">
+          <p className="text-rsdeep text-[0.7rem]">Phone Number</p>
+          <p className="text-rsdeep text-[0.7rem] font-semibold">
+            {allMembers?.phone}
           </p>
         </div>
         <div className="flex flex-row justify-between items-center">

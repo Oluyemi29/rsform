@@ -45,6 +45,12 @@ export const yearList = [
   { key: "2022", label: "2022" },
   { key: "2023", label: "2023" },
   { key: "2024", label: "2024" },
+  { key: "2025", label: "2025" },
+  { key: "2026", label: "2026" },
+  { key: "2027", label: "2027" },
+  { key: "2028", label: "2028" },
+  { key: "2029", label: "2029" },
+  { key: "2030", label: "2030" },
 ];
 
 type regDataProps = {
@@ -370,7 +376,7 @@ const Registration = () => {
             unoptimized
             className="w-12 h-12 rounded-full"
           />
-          <Image
+          <Image  
             src={"/rs.jpg"}
             alt="rs"
             width={40}

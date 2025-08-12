@@ -15,6 +15,7 @@ interface MembersInfoProps {
   name: string;
   companyNumber: string;
   companyName: string;
+  phone: string;
   battalionCouncil: string;
   divisionalCouncil: string;
   regionalCouncil: string;
